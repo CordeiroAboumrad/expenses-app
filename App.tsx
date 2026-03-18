@@ -54,8 +54,11 @@ function ExpensesOverview() {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <StatusBar style="auto" translucent={false} />
-      <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+      <StatusBar style="light" translucent={false} />
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: GlobalStyles.colors.primary500 }}
+        edges={["top"]}
+      >
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen

@@ -1,8 +1,9 @@
-import { FlatList, ListRenderItemInfo, Text } from "react-native";
+import { FlatList, ListRenderItemInfo } from "react-native";
+import ExpenseItem from "./ExpenseItem";
 import { ExpenseObject, ExpensesOutputProps } from "./ExpensesOutput";
 
 function renderExpenseItem(itemData: ListRenderItemInfo<ExpenseObject>) {
-  return <Text>{itemData.item.description}</Text>;
+  return <ExpenseItem {...itemData.item} />;
 }
 
 function ExpensesList({ expenses }: ExpensesOutputProps) {
