@@ -1,8 +1,8 @@
-import { DUMMY_EXPENSES } from "@/app/(tabs)/AllExpenses";
 import {
   AddExpenseObject,
   ExpenseObject,
 } from "@/components/Expenses/ExpensesOutput";
+import { DUMMY_EXPENSES } from "@/constants/data";
 import { createContext, useReducer } from "react";
 
 export const ExpensesContext = createContext({
@@ -12,7 +12,10 @@ export const ExpensesContext = createContext({
   updateExpense: (id: string, expense: AddExpenseObject) => {},
 });
 
-function expensesReducer(state: ExpenseObject[], action: any) {
+function expensesReducer(
+  state: ExpenseObject[],
+  action: { type: string; payload: any },
+) {
   switch (action.type) {
     case "ADD":
       const id = new Date().toString() + Math.random().toString();

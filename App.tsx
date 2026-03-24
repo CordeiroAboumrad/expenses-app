@@ -1,10 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  createNativeStackNavigator,
-  NativeStackScreenProps,
-} from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +12,7 @@ import RecentExpenses from "./app/(tabs)/RecentExpenses";
 
 import IconButton from "./components/ui/IconButton";
 import { GlobalStyles } from "./constants/styles";
+import ExpensesContextProvider from "./store/expenses-context";
 
 export type RootStackParamList = {
   ExpensesOverview: undefined;
@@ -78,30 +76,32 @@ export default function App() {
         style={{ flex: 1, backgroundColor: GlobalStyles.colors.primary500 }}
         edges={["top"]}
       >
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerStyle: {
-                backgroundColor: GlobalStyles.colors.primary500,
-              },
-              headerTintColor: "white",
-            }}
-          >
-            <Stack.Screen
-              name="ExpensesOverview"
-              component={ExpensesOverview}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ManageExpense"
-              component={ManageExpense}
-              options={{
-                title: "Manage Expense",
-                presentation: "modal",
+        <ExpensesContextProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerStyle: {
+                  backgroundColor: GlobalStyles.colors.primary500,
+                },
+                headerTintColor: "white",
               }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+            >
+              <Stack.Screen
+                name="ExpensesOverview"
+                component={ExpensesOverview}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ManageExpense"
+                component={ManageExpense}
+                options={{
+                  title: "Manage Expense",
+                  presentation: "modal",
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ExpensesContextProvider>
       </SafeAreaView>
     </SafeAreaProvider>
   );
