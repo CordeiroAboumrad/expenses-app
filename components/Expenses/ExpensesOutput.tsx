@@ -8,6 +8,12 @@ export interface ExpensesOutputProps {
   periodName?: string;
 }
 
+export interface AddExpenseObject {
+  description: string;
+  amount: number;
+  date: Date;
+}
+
 export interface ExpenseObject {
   id: string;
   description: string;

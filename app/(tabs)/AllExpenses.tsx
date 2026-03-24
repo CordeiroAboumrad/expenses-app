@@ -2,7 +2,7 @@ import ExpensesOutput, {
   ExpenseObject,
 } from "@/components/Expenses/ExpensesOutput";
 
-const DUMMY_EXPENSES: ExpenseObject[] = [
+export const DUMMY_EXPENSES: ExpenseObject[] = [
   {
     id: "e1",
     description: "Test",
