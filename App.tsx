@@ -1,7 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +16,12 @@ import RecentExpenses from "./app/(tabs)/RecentExpenses";
 import IconButton from "./components/ui/IconButton";
 import { GlobalStyles } from "./constants/styles";
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  ExpensesOverview: undefined;
+  ManageExpense: { expenseId?: string } | undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTabs = createBottomTabNavigator();
 
 function ExpensesOverview() {
@@ -71,13 +79,27 @@ export default function App() {
         edges={["top"]}
       >
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: GlobalStyles.colors.primary500,
+              },
+              headerTintColor: "white",
+            }}
+          >
             <Stack.Screen
               name="ExpensesOverview"
               component={ExpensesOverview}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="ManageExpense" component={ManageExpense} />
+            <Stack.Screen
+              name="ManageExpense"
+              component={ManageExpense}
+              options={{
+                title: "Manage Expense",
+                presentation: "modal",
+              }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
