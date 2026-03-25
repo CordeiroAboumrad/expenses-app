@@ -3,6 +3,7 @@ import ExpenseForm from "@/components/ManageExpense/ExpenseForm";
 import IconButton from "@/components/ui/IconButton";
 import { GlobalStyles } from "@/constants/styles";
 import { ExpensesContext } from "@/store/expenses-context";
+import { storeExpense } from "@/util/http";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { useContext, useLayoutEffect } from "react";
 import { StyleSheet, View } from "react-native";
@@ -43,7 +44,8 @@ function ManageExpense({ route, navigation }: Props) {
     if (isEditing) {
       expenseContext.updateExpense(editedExpenseId, expenseData);
     } else {
-      expenseContext.addExpense(expenseData);
+      // expenseContext.addExpense(expenseData);
+      storeExpense(expenseData);
     }
     navigation.goBack();
   }

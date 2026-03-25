@@ -40,14 +40,11 @@ function ExpenseForm({
     },
   });
 
-  function inputChangedHandler(
-    inputIdentifier: string | number | symbol | any,
-    enteredValue: ExpenseFormFields,
-  ) {
+  function inputChangedHandler(inputIdentifier: string, enteredValue: string) {
     setInputs((currInputValues) => {
       return {
         ...currInputValues,
-        [inputIdentifier]: enteredValue,
+        [inputIdentifier]: { value: enteredValue, isValid: true },
       };
     });
   }
@@ -59,7 +56,7 @@ function ExpenseForm({
 
   function submitHandler() {
     const expenseData = {
-      amount: { value: +inputs.amount, isValid: true },
+      amount: { value: +inputs.amount.value, isValid: true },
       date: {
         value: inputs.date.value,
         isValid: true,
@@ -74,6 +71,13 @@ function ExpenseForm({
       getFormattedDate(new Date(expenseData.date.value)) !== "" &&
       getFormattedDate(new Date(expenseData.date.value)).length == 10;
     const descriptionIsValid = expenseData.description.value.trim().length > 0;
+
+    console.log(isNaN(expenseData.amount.value));
+    console.log(expenseData.amount.value);
+    console.log(Number(expenseData.amount.value));
+    console.log(amountIsValid);
+    console.log(dateIsValid);
+    console.log(descriptionIsValid);
 
     if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
       Alert.alert("Invalid input", "Please check your input values");
@@ -106,10 +110,7 @@ function ExpenseForm({
           textInputConfig={{
             keyboardType: "decimal-pad",
             onChangeText: (value: string) =>
-              inputChangedHandler(
-                "amount",
-                value as unknown as ExpenseFormFields,
-              ),
+              inputChangedHandler("amount", value),
             value: inputs.amount.value,
           }}
         />
@@ -120,12 +121,7 @@ function ExpenseForm({
           textInputConfig={{
             placeholder: "YYYY-MM-DD",
             maxLength: 10,
-            onChangeText: (value: string) => {
-              inputChangedHandler(
-                "date",
-                value as unknown as ExpenseFormFields,
-              );
-            },
+            onChangeText: (value: string) => inputChangedHandler("date", value),
             value: inputs.date.value,
           }}
         />
@@ -135,12 +131,8 @@ function ExpenseForm({
         invalid={!inputs.description.isValid}
         textInputConfig={{
           multiline: true,
-          onChangeText: (value: string) => {
-            inputChangedHandler(
-              "description",
-              value as unknown as ExpenseFormFields,
-            );
-          },
+          onChangeText: (value: string) =>
+            inputChangedHandler("description", value),
           value: inputs.description.value,
         }}
       />
