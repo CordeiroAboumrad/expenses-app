@@ -1,3 +1,4 @@
+import { getFormattedDate } from "@/util/date";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { AddExpenseObject } from "../Expenses/ExpensesOutput";
@@ -11,18 +12,22 @@ type ExpenseFormFields = {
 };
 
 function ExpenseForm({
+  defaultValues,
   isEditing,
   onCancel,
   onSubmit,
 }: {
+  defaultValues: AddExpenseObject | undefined;
   isEditing: boolean;
   onCancel: () => void;
   onSubmit: (expenseData: AddExpenseObject) => void;
 }) {
   const [inputValues, setInputValues] = useState({
-    amount: "",
-    date: "",
-    description: "",
+    amount: defaultValues ? defaultValues.amount.toString() : "",
+    date: defaultValues ? getFormattedDate(defaultValues.date) : "",
+    description: defaultValues
+      ? defaultValues.description.toString().slice(0, 10)
+      : "",
   });
 
   function inputChangedHandler(
