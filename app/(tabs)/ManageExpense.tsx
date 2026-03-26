@@ -1,11 +1,12 @@
 import { AddExpenseObject } from "@/components/Expenses/ExpensesOutput";
 import ExpenseForm from "@/components/ManageExpense/ExpenseForm";
 import IconButton from "@/components/ui/IconButton";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import { GlobalStyles } from "@/constants/styles";
 import { ExpensesContext } from "@/store/expenses-context";
-import { storeExpense } from "@/util/http";
+import { deleteExpense, storeExpense, updateExpense } from "@/util/http";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { RootStackParamList } from "../../App";
 
@@ -15,6 +16,7 @@ type Props = {
 };
 
 function ManageExpense({ route, navigation }: Props) {
+  const [isSubmittingState, setIsSubmittingState] = useState(false);
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
 
@@ -30,9 +32,11 @@ function ManageExpense({ route, navigation }: Props) {
     });
   }, [navigation, isEditing]);
 
-  function deleteExpenseHandler() {
+  async function deleteExpenseHandler() {
+    setIsSubmittingState(true);
     if (!editedExpenseId) return;
     expenseContext.deleteExpense(editedExpenseId);
+    await deleteExpense(editedExpenseId);
     navigation.goBack();
   }
 
@@ -40,17 +44,21 @@ function ManageExpense({ route, navigation }: Props) {
     navigation.goBack();
   }
 
-  function confirmHandler(expenseData: AddExpenseObject) {
+  async function confirmHandler(expenseData: AddExpenseObject) {
+    setIsSubmittingState(true);
     if (isEditing) {
       expenseContext.updateExpense(editedExpenseId, expenseData);
+      updateExpense(editedExpenseId, expenseData);
     } else {
-      // expenseContext.addExpense(expenseData);
-      storeExpense(expenseData);
+      const id = await storeExpense(expenseData);
+      expenseContext.addExpense({ ...expenseData, id: id });
     }
     navigation.goBack();
   }
 
-  return (
+  return isSubmittingState ? (
+    <LoadingOverlay />
+  ) : (
     <View style={styles.container}>
       <ExpenseForm
         isEditing={isEditing}

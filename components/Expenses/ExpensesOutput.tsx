@@ -10,9 +10,9 @@ export interface ExpensesOutputProps {
 }
 
 export interface AddExpenseObject {
-  description: string;
   amount: number;
   date: Date;
+  description: string;
 }
 
 export interface ExpenseObject {

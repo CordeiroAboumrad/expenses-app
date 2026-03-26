@@ -6,12 +6,6 @@ import { AddExpenseObject } from "../Expenses/ExpensesOutput";
 import Button from "../ui/Button";
 import Input from "./Input";
 
-type ExpenseFormFields = {
-  amount: String;
-  date: String;
-  description: String;
-};
-
 function ExpenseForm({
   defaultValues,
   isEditing,
@@ -33,9 +27,7 @@ function ExpenseForm({
       isValid: true,
     },
     description: {
-      value: defaultValues
-        ? defaultValues.description.toString().slice(0, 10)
-        : "",
+      value: defaultValues ? defaultValues.description.toString() : "",
       isValid: true,
     },
   });
@@ -71,13 +63,6 @@ function ExpenseForm({
       getFormattedDate(new Date(expenseData.date.value)) !== "" &&
       getFormattedDate(new Date(expenseData.date.value)).length == 10;
     const descriptionIsValid = expenseData.description.value.trim().length > 0;
-
-    console.log(isNaN(expenseData.amount.value));
-    console.log(expenseData.amount.value);
-    console.log(Number(expenseData.amount.value));
-    console.log(amountIsValid);
-    console.log(dateIsValid);
-    console.log(descriptionIsValid);
 
     if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
       Alert.alert("Invalid input", "Please check your input values");
