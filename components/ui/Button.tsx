@@ -9,7 +9,7 @@ function Button({
 }: {
   children: React.ReactNode;
   onPress: () => void;
-  mode: String;
+  mode?: String;
   style?: object | any;
 }) {
   return (
